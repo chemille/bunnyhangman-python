@@ -32,7 +32,7 @@
      {% if '_' not in word_display %}
         <p>Congrats! You win!</p>
         <button class="play-again-button"><a href="{{ url_for('reset') }}">Play Again</a></button>
-     {% elif wrong_guesses >= 7 %}
+     {% elif remaining_guesses == 0 %}
         <p>Sorry, you lose. The word was {{session.word}}</p>
         <button class="reset-button"><a href="{{ url_for('reset') }}">Try Again</a></button>
      {% else %}
