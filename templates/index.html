@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐰 Bunny Word Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+    <h1>🐰 Bunny Word Game</h1>
+    <ul>
+        {% for item in picture_display %}
+            <li class="picture-display">{{ item }}</li>
+        {% endfor %}
+    </ul>
+    <h2>🐇 Word: {{ word_display }}</h2>
+    <h3>Already Guessed: {{valid_guesses}}</h3>
+    <!-- <h3>Remaining Guesses: <span class="{{ 'red-text' if remaining_guesses <= 3 else ''}}">{{ remaining_guesses }}</span></h3> -->
+    <h3>Lives: 
+        <span class="carrot">
+        {% for _ in range(remaining_guesses) %}
+        🥕
+        {% endfor %}
+        {% if remaining_guesses == 0 %}
+        <span class="red-text">0</span>
+        {% endif %}
+        </span>
+    </h3>
+    <p>{{ message }}</p>
+
+     {% if '_' not in word_display %}
+        <p>Congrats! You win!</p>
+        <button class="play-again-button"><a href="{{ url_for('reset') }}">Play Again</a></button>
+     {% elif wrong_guesses >= 7 %}
+        <p>Sorry, you lose. The word was {{session.word}}</p>
+        <button class="reset-button"><a href="{{ url_for('reset') }}">Try Again</a></button>
+     {% else %}
+        <form action="{{ url_for('guess')}}" method="POST">
+            <input type="text" name="guess" placeholder="Type here" maxlength="1" required>
+            <button class="guess-button" type="submit">Guess</button>
+        </form>
+     {% endif %}
+
+     <button class="reset-button"><a href="{{ url_for('reset') }}">Reset Game</a></button>
+    </div>
+</body>
+</html>
